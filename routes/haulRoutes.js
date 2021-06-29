@@ -18,7 +18,7 @@ router.get("/createHaul/:auth0ID/:haulName", async (req, res) => {
         req.params.auth0ID,
         req.params.haulName
     );
-
+    console.log(insertedHaul);
     res.json(insertedHaul);
 });
 router.get("/deleteHaul/:auth0ID/:haulID", async (req, res) => {
@@ -26,15 +26,16 @@ router.get("/deleteHaul/:auth0ID/:haulID", async (req, res) => {
     res.json(deleted);
 });
 
-router.post("/createListing/:auth0ID/:haulID", async (req, res) => {
+router.post("/createListing/:haulID", async (req, res) => {
     let listing = req.body;
-    listing.dateAdded = new Date();
+    // Do some webscraping here for the price & image
     if (!listing.pricing) listing.price = "Unable to find price";
-    createListing(req.params.auth0ID, req.params.haulID, listing);
+    const insertedListing = await createListing(req.params.haulID, listing);
+    res.json(insertedListing);
 });
 
-router.get("/getListings/:auth0ID/:haulID", async (req, res) => {
-    const listings = await getListings(req.params.auth0ID, req.params.haulID);
+router.get("/getListings/:haulID", async (req, res) => {
+    const listings = await getListings(req.params.haulID);
     res.json(listings);
 });
 module.exports = router;

@@ -1,53 +1,59 @@
 const UserModel = require("../models/UserModel");
+const HaulModel = require("../models/HaulModel");
 
+const { addHaulToUser } = require("./userUtils");
+
+// Returns the hauls from UserModel
 async function getHaulNames(auth0ID) {
-    const user = await UserModel.findOne(
-        { auth0ID },
-        "hauls.haulName hauls._id"
-    );
+    const user = await UserModel.findOne({ auth0ID }, "hauls");
     return user;
 }
 
+// Returns the haul that was inserted into UserModel
 async function createHaul(auth0ID, haulName) {
-    let haul = {
-        haulName,
-        dateCreated: new Date(),
+    let haul = new HaulModel({
+        name: haulName,
         listings: [],
-    };
-    const insertedHaul = await UserModel.updateOne(
-        { auth0ID },
-        {
-            $push: { hauls: haul },
-        }
-    );
-    // After user inserts a haul, returns all the haul names and id
-    return getHaulNames(auth0ID);
+    });
+
+    return new Promise((resolve) => {
+        haul.save(async (err, doc) => {
+            await addHaulToUser(auth0ID, doc._id, haulName);
+            resolve({ _id: doc._id, name: haulName });
+        });
+    });
 }
 
+// Deletes a haul from UserModel and HaulModel
 async function deleteHaul(auth0ID, haulID) {
-    const result = await UserModel.updateOne(
+    await UserModel.updateOne(
         { auth0ID },
         { $pull: { hauls: { _id: haulID } } }
     );
-    if (result.nModified === 0) return { deleted: false };
-    return { deleted: true };
+    await HaulModel.findByIdAndDelete(haulID);
 }
 
-async function createListing(auth0ID, haulID, listing) {
-    const insertedHaul = await UserModel.updateOne(
-        { auth0ID, "hauls._id": haulID },
+// Returns the newly inserted listing (May be slow since it is also fetching the entire doc when it saves the listing)
+async function createListing(haulID, listing) {
+    const haul = await HaulModel.findOne({ _id: haulID });
+    haul.listings.push(listing);
+
+    return new Promise((resolve) => {
+        haul.save((err, doc) => {
+            const listings = doc.listings;
+            resolve(listings[listings.length - 1]);
+        });
+    });
+}
+
+// Returns ALL the listings of a haul.
+// NOTE: This might be bad once hauls get large but this will be fine for now
+async function getListings(haulID) {
+    const listings = await HaulModel.findOne(
         {
-            $push: { "hauls.$.listings": listing },
-        }
-    );
-    // After user inserts a haul, returns all the haul names and id
-    return getHaulNames(auth0ID);
-}
-
-async function getListings(auth0ID, haulID) {
-    const listings = await UserModel.findOne(
-        { auth0ID, "hauls._id": haulID },
-        "hauls.$"
+            _id: haulID,
+        },
+        "listings"
     );
     return listings;
 }
