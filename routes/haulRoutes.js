@@ -7,6 +7,7 @@ const {
     deleteHaul,
     createListing,
     getListings,
+    deleteListing,
 } = require("../utils/haulUtils");
 
 const {
@@ -33,27 +34,42 @@ router.get("/deleteHaul/:auth0ID/:haulID", async (req, res) => {
     res.json(deleted);
 });
 
+router.get("/getListings/:haulID", async (req, res) => {
+    const listings = await getListings(req.params.haulID);
+    res.json(listings);
+});
 router.post("/createListing/:haulID", async (req, res) => {
     let listing = req.body;
-    const scrapedData = await scrape(req.body.link);
-    if (scrapedData.itemName && !listing.itemName)
-        listing.itemName = scrapedData.itemName;
-    if (scrapedData.price) listing.price = scrapedData.price;
-    else listing.price = "Unable to find price";
 
-    if (scrapedData.imageURL) {
-        if (scrapedData.imageURL.length > 0) {
-            listing.imageURL = scrapedData.imageURL[0];
+    try {
+        const scrapedData = await scrape(req.body.link);
+        if (scrapedData.itemName && !listing.itemName)
+            listing.itemName = scrapedData.itemName;
+        if (scrapedData.price) listing.price = scrapedData.price;
+        else listing.price = "Unable to find price";
+
+        if (listing.imageURL) {
+            if (listing.imageURL.includes("imgur")) {
+                const images = await scrapeImgur(listing.imageURL);
+                listing.imageURL = images.imageURL;
+            }
+        } else {
+            listing.imageURL = scrapedData.imageURL;
         }
+    } catch (err) {
+        console.log("ERROR SCRAPING: ", err);
     }
 
     const insertedListing = await createListing(req.params.haulID, listing);
     res.json(insertedListing);
 });
 
-router.get("/getListings/:haulID", async (req, res) => {
-    const listings = await getListings(req.params.haulID);
-    res.json(listings);
+router.get("/deleteListing/:haulID/:listingID", async (req, res) => {
+    const deleted = await deleteListing(
+        req.params.haulID,
+        req.params.listingID
+    );
+    res.json({ deleted });
 });
 
 router.get("/test", async (req, res) => {

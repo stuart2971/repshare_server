@@ -7,7 +7,7 @@ const Haul = new Schema({
         {
             link: String,
             price: String,
-            imageURL: String,
+            imageURL: [String],
             rating: String,
             tag: String,
             itemName: String,

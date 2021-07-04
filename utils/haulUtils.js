@@ -58,10 +58,36 @@ async function getListings(haulID) {
     return listings;
 }
 
+async function deleteListing(haulID, listingID) {
+    // return new Promise(async (resolve) => {
+    //     const listing = await HaulModel.updateOne(
+    //         { _id: haulID },
+    //         {
+    //             $pull: { listings: { _id: listingID } },
+    //         },
+    //         (err, data) => {
+    //             if (data.nModified > 0) resolve(true);
+    //             else resolve(false);
+    //         }
+    //     );
+    // });
+
+    const listing = await HaulModel.updateOne(
+        { _id: haulID },
+        {
+            $pull: { listings: { _id: listingID } },
+        },
+        (err, data) => {
+            if (data.nModified > 0) return true;
+            else return false;
+        }
+    );
+}
 module.exports = {
     getHaulNames,
     createHaul,
     deleteHaul,
     createListing,
     getListings,
+    deleteListing,
 };
