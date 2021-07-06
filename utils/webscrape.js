@@ -1,11 +1,5 @@
 const puppeteer = require("puppeteer");
 
-//  document.querySelector("div[class='price']");
-//  document.querySelector(
-//      "div[class='react-swipe-container '] > div > div > img"
-//  );
-//  document.querySelector("h2[class='title']");
-
 async function scrapeTaobao(link) {
     let browser = await puppeteer.launch({ headless: false });
     let page = await browser.newPage();
@@ -19,7 +13,7 @@ async function scrapeTaobao(link) {
         let videoURL = document.querySelector("video[class='lib-video']");
         if (videoURL) videoURL = videoURL.src;
 
-        let price = document.getElementById("J_StrPrice");
+        let price = document.querySelector("em[class='tb-rmb-num']");
         if (price) price = price.innerText;
 
         let itemName = document.getElementById("J_Title");

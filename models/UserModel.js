@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 const User = new Schema({
     auth0ID: String,
+    currency: String,
     hauls: [
         {
             name: String,

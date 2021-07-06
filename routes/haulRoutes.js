@@ -10,12 +10,7 @@ const {
     deleteListing,
 } = require("../utils/haulUtils");
 
-const {
-    scrapeWeidian,
-    scrapeTaobao,
-    scrapeImgur,
-    scrape,
-} = require("../utils/webscrape");
+const { scrapeImgur, scrape } = require("../utils/webscrape");
 
 router.get("/getHaulNames/:auth0ID", async (req, res) => {
     res.json(await getHaulNames(req.params.auth0ID));
@@ -34,6 +29,7 @@ router.get("/deleteHaul/:auth0ID/:haulID", async (req, res) => {
     res.json(deleted);
 });
 
+// Currently there is no limit for the number of listings returned because most mega lists are in the 100-200 range and dont need a limit.
 router.get("/getListings/:haulID", async (req, res) => {
     const listings = await getListings(req.params.haulID);
     res.json(listings);
@@ -74,7 +70,7 @@ router.get("/deleteListing/:haulID/:listingID", async (req, res) => {
 
 router.get("/test", async (req, res) => {
     const link =
-        "https://shop908919004.v.weidian.com/item.html?itemID=2756092539&spider_token=8179";
+        "https://weidian.com/item.html?itemID=4394329986&wfr=wx&source=goods_home&ifr=itemdetail&sfr=app";
     scrape(link).then((d) => {
         res.json(d);
     });
