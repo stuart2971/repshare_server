@@ -26,7 +26,7 @@ router.get("/createHaul/:auth0ID/:haulName", async (req, res) => {
 });
 router.get("/deleteHaul/:auth0ID/:haulID", async (req, res) => {
     const deleted = await deleteHaul(req.params.auth0ID, req.params.haulID);
-    res.json(deleted);
+    res.json({ deleted });
 });
 
 // Currently there is no limit for the number of listings returned because most mega lists are in the 100-200 range and dont need a limit.
@@ -70,7 +70,7 @@ router.get("/deleteListing/:haulID/:listingID", async (req, res) => {
 
 router.get("/test", async (req, res) => {
     const link =
-        "https://weidian.com/item.html?itemID=4394329986&wfr=wx&source=goods_home&ifr=itemdetail&sfr=app";
+        "https://weidian.com/item.html?itemID=4233557298&spider_token=fad9";
     scrape(link).then((d) => {
         res.json(d);
     });

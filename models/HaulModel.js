@@ -8,9 +8,10 @@ const Haul = new Schema({
             link: String,
             price: String,
             imageURL: [String],
-            rating: String,
+            rating: Number,
             tag: String,
             itemName: String,
+            videoURL: String,
         },
     ],
 });

@@ -31,6 +31,7 @@ async function deleteHaul(auth0ID, haulID) {
         { $pull: { hauls: { _id: haulID } } }
     );
     await HaulModel.findByIdAndDelete(haulID);
+    return true;
 }
 
 // Returns the newly inserted listing (May be slow since it is also fetching the entire doc when it saves the listing)

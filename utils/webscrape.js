@@ -43,7 +43,7 @@ async function scrapeWeidian(link) {
 
         let priceSpan =
             document.querySelector("span[class='discount-cur']") ||
-            document.querySelector("span[class='cur-price']");
+            document.querySelector("span[class='cur-price wd-theme__price']");
         let price = "";
         if (priceSpan) price = priceSpan.innerText;
 
