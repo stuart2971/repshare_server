@@ -2,9 +2,7 @@ const puppeteer = require("puppeteer");
 
 async function scrapeTaobao(link) {
     let browser = await puppeteer.launch({
-        headless: false,
         args: ["--no-sandbox"],
-        ignoreDefaultArgs: ["--disable-extensions"],
     });
     let page = await browser.newPage();
 
@@ -34,9 +32,7 @@ async function scrapeTaobao(link) {
 }
 async function scrapeWeidian(link) {
     let browser = await puppeteer.launch({
-        headless: false,
         args: ["--no-sandbox"],
-        ignoreDefaultArgs: ["--disable-extensions"],
     });
     let page = await browser.newPage();
 
@@ -70,9 +66,7 @@ async function scrapeWeidian(link) {
 }
 async function scrapeImgur(link) {
     let browser = await puppeteer.launch({
-        headless: false,
         args: ["--no-sandbox"],
-        ignoreDefaultArgs: ["--disable-extensions"],
     });
     let page = await browser.newPage();
 
