@@ -4,6 +4,7 @@ async function scrapeTaobao(link) {
     let browser = await puppeteer.launch({
         headless: false,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        ignoreDefaultArgs: ["--disable-extensions"],
     });
     let page = await browser.newPage();
 
@@ -35,6 +36,7 @@ async function scrapeWeidian(link) {
     let browser = await puppeteer.launch({
         headless: false,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        ignoreDefaultArgs: ["--disable-extensions"],
     });
     let page = await browser.newPage();
 
@@ -70,6 +72,7 @@ async function scrapeImgur(link) {
     let browser = await puppeteer.launch({
         headless: false,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        ignoreDefaultArgs: ["--disable-extensions"],
     });
     let page = await browser.newPage();
 
