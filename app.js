@@ -19,5 +19,5 @@ app.use("/user", require("./routes/userRoutes"));
 app.use("/haul", require("./routes/haulRoutes"));
 
 app.listen(process.env.PORT, () => {
-    console.log("Running on port 3001");
+    console.log("Running on port " + process.env.PORT);
 });
