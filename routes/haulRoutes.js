@@ -8,6 +8,7 @@ const {
     createListing,
     getListings,
     deleteListing,
+    updateListing,
 } = require("../utils/haulUtils");
 
 const { scrapeImgur, scrape } = require("../utils/webscrape");
@@ -42,7 +43,7 @@ router.post("/createListing/:haulID", async (req, res) => {
         if (scrapedData.itemName && !listing.itemName)
             listing.itemName = scrapedData.itemName;
         if (scrapedData.price) listing.price = scrapedData.price;
-        else listing.price = "Unable to find price";
+        else listing.price = "";
 
         if (listing.imageURL) {
             if (listing.imageURL.includes("imgur")) {
@@ -68,9 +69,14 @@ router.get("/deleteListing/:haulID/:listingID", async (req, res) => {
     res.json({ deleted });
 });
 
+router.post("/updateListing/:listingID", async (req, res) => {
+    const updated = await updateListing(req.params.listingID, req.body);
+    res.json({ updated });
+});
+
 router.get("/test", async (req, res) => {
     const link =
-        "https://weidian.com/item.html?itemID=4233557298&spider_token=fad9";
+        "https://m.intl.taobao.com/detail/detail.html?id=646954610226&spm=1101.1101.N.N.5dab637";
     scrape(link).then((d) => {
         res.json(d);
     });

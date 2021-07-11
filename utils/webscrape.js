@@ -25,6 +25,7 @@ async function scrapeTaobao(link) {
             imageURL,
             price,
             itemName,
+            videoURL,
         };
     });
     await browser.close();

@@ -68,6 +68,22 @@ async function deleteListing(haulID, listingID) {
     );
 }
 
+async function updateListing(listingID, newListing) {
+    const listing = await HaulModel.updateOne(
+        { "listings._id": listingID },
+        {
+            $set: {
+                "listings.$.link": newListing.link,
+                "listings.$.itemName": newListing.itemName,
+                "listings.$.rating": newListing.rating,
+                "listings.$.tag": newListing.tag,
+                "listings.$.price": newListing.price,
+                "listings.$.imageURL": newListing.imageURL,
+            },
+        }
+    );
+    return listing;
+}
 module.exports = {
     getHaulNames,
     createHaul,
@@ -75,4 +91,5 @@ module.exports = {
     createListing,
     getListings,
     deleteListing,
+    updateListing,
 };
