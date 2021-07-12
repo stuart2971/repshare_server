@@ -21,3 +21,6 @@ app.use("/haul", require("./routes/haulRoutes"));
 app.listen(process.env.PORT, () => {
     console.log("Running on port " + process.env.PORT);
 });
+const urlSearchParams = new URLSearchParams("id=585160976995");
+const params = urlSearchParams.get("id");
+console.log(params);

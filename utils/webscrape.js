@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const $ = require("jquery");
 
 async function scrapeTaobao(link) {
     let browser = await puppeteer.launch({
@@ -6,9 +7,18 @@ async function scrapeTaobao(link) {
     });
     let page = await browser.newPage();
 
+    // If it is the mobile website, copies the item id to the desktop url
+    if (link.includes("detail")) {
+        const urlSearchParams = new URLSearchParams(link.split("?")[1]);
+        const params = urlSearchParams.get("id");
+
+        link =
+            "https://item.taobao.com/item.htm?spm=a2oq0.12575281.0.0.49501debEvFJCZ&ft=t&id=" +
+            params;
+    }
     await page.goto(link, { waitUntil: "networkidle2" });
 
-    let data = await page.evaluate(() => {
+    const data = await page.evaluate(() => {
         let imageURL = document.getElementById("J_ImgBooth");
         if (imageURL) imageURL = [imageURL.src];
 
@@ -28,6 +38,7 @@ async function scrapeTaobao(link) {
             videoURL,
         };
     });
+
     await browser.close();
     return data;
 }

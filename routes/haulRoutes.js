@@ -75,8 +75,7 @@ router.post("/updateListing/:listingID", async (req, res) => {
 });
 
 router.get("/test", async (req, res) => {
-    const link =
-        "https://m.intl.taobao.com/detail/detail.html?id=646954610226&spm=1101.1101.N.N.5dab637";
+    const link = "https://m.intl.taobao.com/detail/detail.html?id=585160976995";
     scrape(link).then((d) => {
         res.json(d);
     });
