@@ -37,6 +37,8 @@ router.get("/getListings/:haulID", async (req, res) => {
 });
 router.post("/createListing/:haulID", async (req, res) => {
     let listing = req.body;
+    if (listing.rating > 100) listing.rating = 100;
+    if (listing.rating < 0) listing.rating = 0;
 
     try {
         const scrapedData = await scrape(req.body.link);

@@ -12,6 +12,7 @@ const Haul = new Schema({
             tag: String,
             itemName: String,
             videoURL: String,
+            comment: String,
         },
     ],
 });
