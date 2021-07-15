@@ -54,7 +54,7 @@ async function getListings(haulID) {
         {
             _id: haulID,
         },
-        "listings"
+        "listings name"
     );
     return listings;
 }
@@ -69,8 +69,6 @@ async function deleteListing(haulID, listingID) {
 }
 
 async function updateListing(listingID, newListing) {
-    console.log(newListing);
-
     const listing = await HaulModel.updateOne(
         { "listings._id": listingID },
         {

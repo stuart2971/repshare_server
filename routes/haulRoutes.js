@@ -22,7 +22,6 @@ router.get("/createHaul/:auth0ID/:haulName", async (req, res) => {
         req.params.auth0ID,
         req.params.haulName
     );
-    console.log(insertedHaul);
     res.json(insertedHaul);
 });
 router.get("/deleteHaul/:auth0ID/:haulID", async (req, res) => {
